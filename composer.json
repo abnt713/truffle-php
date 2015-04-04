@@ -1,5 +1,8 @@
 {
     "require": {
-		"sofadesign/limonade": "dev-master"
+        "php": ">=5.3.0",
+		"sofadesign/limonade": "dev-master",
+        "j4mie/paris": ">=1.5.4",
+        "robmorgan/phinx": ">=0.4.3"
 	}
 }
