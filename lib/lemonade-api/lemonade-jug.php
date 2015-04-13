@@ -4,10 +4,12 @@ class LemonadeJug{
     
     private $prefix;
     private $assignments;
+    private $resource_path;
     
-    public function __construct($prefix = ''){
+    public function __construct($prefix = '', $resource_path = null){
         $this->prefix = $prefix;
         $this->assignments = array();
+        $this->resource_path = $resource_path;
     }
     
     public function append($route, $resource_class){

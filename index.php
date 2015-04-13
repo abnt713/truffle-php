@@ -11,5 +11,5 @@ require_once __DIR__ . '/api/resources/v1/test-resource.php';
 require_once __DIR__ . '/lib/truffle/route-loader.php';
 
 
-RouteLoader::load_route('routes-v1');
+RouteLoader::load_project('routes-v1');
 LemonadeStand::serve();
