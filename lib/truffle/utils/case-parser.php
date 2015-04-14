@@ -3,15 +3,20 @@
 final class CaseParser{
 
     public static function decamelize($word) {
-        return preg_replace(
-            '/(^|[a-z])([A-Z])/e', 
-            'strtolower(strlen("\\1") ? "\\1_\\2" : "\\2")',
-            $word 
-        ); 
+        $str = preg_replace('/([a-z])([A-Z])/', "\\1_\\2", $word);
+        $underlines = strtolower($str);
+        return $underlines;
     }
 
-    public static function camelize($word) { 
-        return preg_replace('/(^|_)([a-z])/e', 'strtoupper("\\2")', $word);
+    public static function camelize($string, $capitalizeFirstCharacter = false){
+
+        $str = str_replace(' ', '', ucwords(str_replace('_', ' ', $string)));
+
+        if (!$capitalizeFirstCharacter) {
+            $str[0] = strtolower($str[0]);
+        }
+
+        return $str;
     }
 
 }

@@ -20,10 +20,10 @@ class LemonadeFactory{
         }
     }
 
-    public static function create_api($api_prefix, $api_name){
+    public static function create_api($api_prefix, $api_name, $require_on_demand){
         self::instantiate();
         
-        $created_api = new LemonadeAPI($api_prefix, $api_name);
+        $created_api = new LemonadeAPI($api_prefix, $api_name, $require_on_demand);
         self::$instance->apis[] = $created_api;
         return $created_api;
     }

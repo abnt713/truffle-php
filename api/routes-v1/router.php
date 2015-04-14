@@ -2,11 +2,9 @@
 
 class RoutesV1_Router{
     
-    public function set_routes($prefix){
-        $api = LemonadeFactory::create_api($prefix, 'routes-v1');
-        
+    public function set_routes($api){
         $api->append('/', 'TestController');
-//        $api->append('/testing', 'TestResource');
+        $api->append('/test', 'TestingController');
     }
     
 }

@@ -5,25 +5,21 @@ class LemonadeAPI{
     private $prefix;
     private $assignments;
     private $api_name;
-    private $mimic_route;
+    private $require_on_demand;
 
-    public function __construct($prefix, $api_name, $mimic_route = true){
+    public function __construct($prefix, $api_name, $require_on_demand = true){
         $this->prefix = $prefix;
         $this->assignments = array();
         $this->api_name = $api_name;
-        $this->mimic_route = $mimic_route;
+        $this->require_on_demand = $require_on_demand;
     }
 
     public function append($route, $controller_class){
         if(!array_key_exists($route, $this->assignments)){
             $this->assignments[$route] = $controller_class;
         }else{
-            $this->throw_error('Route already defined');
+            die('Route already defined');
         }
-    }
-
-    public function throw_error($error, $halt = true){
-        die($error);
     }
 
     public function serve(){
@@ -32,15 +28,13 @@ class LemonadeAPI{
 
     private function process_assignments(){
         foreach($this->assignments as $raw_index => $raw_controller){
-
-            $index = $this->get_undashed($this->prefix) . $raw_index;
-            $include_prefix = 'api/' . $this->api_name . '/controllers';
+            $index = PathParser::get_undashed($this->prefix) . $raw_index;
             // Include controller
-            if($this->mimic_route){
-                $include_path = realpath(__DIR__ . '/../../' . $include_prefix . $raw_index . $this->get_hiffen($raw_controller) . '.php');
-                require_once $include_path;
-            }else{
-                require_once $include_prefix . '/' . $this->get_hiffen($raw_controller);
+            if($this->require_on_demand){
+                $include_prefix = 'api/' . $this->api_name . '/controllers';
+                $path_index = PathParser::get_undashed($raw_index) . '/';
+                $include_path = __DIR__ . '/../../' . $include_prefix . '/' . PathParser::get_hiffen($raw_controller) . '.php';
+                require_once $include_path;                
             }
             $controller = new $raw_controller();
 
@@ -51,20 +45,4 @@ class LemonadeAPI{
             dispatch_patch($index, array($controller, '_patch'));
         }
     }
-
-    private function get_undashed($path){
-        if(substr($path, -1, 1) == '/'){
-            return substr($path, 0, strlen($path) - 1);
-        }else{
-            return $path;
-        }
-    }
-
-    private function get_hiffen($word){
-        $decamelized = CaseParser::decamelize($word);
-        return str_replace('_', '-', $decamelized);
-    }
-
-    
-
 }
