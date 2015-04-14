@@ -1,11 +1,11 @@
 <?php
 
-abstract class LemonadeResource{
+abstract class LemonadeController{
     
-    private $lemonade_jug;
+    private $lemonade_api;
     
-    public function set_lemonade_jug($jug){
-        $this->lemonade_jug = $jug;
+    public function set_lemonade_api($api){
+        $this->lemonade_api = $api;
     }
     
     public function get(){ return ; }
@@ -57,7 +57,7 @@ abstract class LemonadeResource{
         );
         
         if(!in_array($method_name, $available_methods)){
-            $this->lemonade_jug->throw_error('Invalid callable method name');
+            $this->lemonade_api->throw_error('Invalid callable method name');
         }
     }
 }
