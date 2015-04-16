@@ -1,6 +1,6 @@
 <?php
 
-class RoutesV1_Router{
+class RoutesV1Router{
     
     public function set_routes($api){
         $api->append('/', 'TestController');

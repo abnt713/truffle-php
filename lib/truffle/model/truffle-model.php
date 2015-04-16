@@ -4,7 +4,7 @@ define('MODEL_PRIMARY_KEY_INDEX', 'id');
 define('MODEL_CRITERIA_INDEX', 'criteria');
 define('MODEL_DATA_INDEX', 'data');
 
-abstract class TruffleModel{
+abstract class RawModel{
 
     private $table_name;
     private $operation;
