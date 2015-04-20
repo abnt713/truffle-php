@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
   Options +FollowSymlinks
-  Options +Indexes
+  Options -Indexes
   RewriteEngine on
 
   # if your app is in a subfolder
@@ -10,6 +10,8 @@
   RewriteCond %{SCRIPT_FILENAME} !-f
   # test string is a valid directory
   RewriteCond %{SCRIPT_FILENAME} !-d
+  
+  RewriteCond %{REQUEST_FILENAME} !-l
 
   RewriteRule ^(.*)$   index.php?uri=/$1    [NC,L,QSA]
   # with QSA flag (query string append),
