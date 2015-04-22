@@ -1,12 +1,6 @@
 <?php
 
-class TruffleModel extends RawModel{
-    
-    private $scheme;
-    
-    public function set_scheme(ModelScheme $scheme){
-        $this->scheme = $scheme;
-    }
+abstract class TruffleModel extends RawModel{
     
     public function insert_pre_hook(){
         /* Parâmetro: array com os dados das colunas => valor */

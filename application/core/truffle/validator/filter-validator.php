@@ -18,7 +18,9 @@ class FilterValidator implements RawValidator{
         $result = true;
         foreach($filters as $filter => $value){
             if(!in_array($filter, $this->required_filters)){
-                $this->require_filter($filter);
+                if(!$this->require_filter($filter)){
+                    continue;
+                }
             }
             $className = CaseParser::camelize($filter) . 'Filter';
             $filter = new $className();

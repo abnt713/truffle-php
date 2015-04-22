@@ -8,6 +8,10 @@ abstract class LimonadeController{
         $this->limonade_api = $api;
     }
     
+    public function get_api_name(){
+        return $this->limonade_api->get_api_name();
+    }
+    
     public function get(){ return ; }
     public function post(){ return ; }
     public function put(){ return ; }

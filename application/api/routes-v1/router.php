@@ -1,6 +1,6 @@
 <?php
 
-class RoutesV1Router{
+class RoutesV1Router implements TruffleRouter{
     
     public function set_routes($api){
         $api->append('/', 'TestController');

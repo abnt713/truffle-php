@@ -1,6 +1,6 @@
 <?php
 
-class MaxLengthFilter implements ValidationFilter{
+class LengthFilter implements ValidationFilter{
     
     public function filter($data, $parameters = array()){
         

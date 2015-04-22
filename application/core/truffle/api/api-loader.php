@@ -17,6 +17,7 @@ class ApiLoader{
             $router_class = $raw_router . 'Router';
             $router = new $router_class();
             $api = $this->factory->create_api($prefix, $api_name, $require_from_simple_dir);
+            $api->set_api_dir($api_dir);
             $router->set_routes($api);
         }
     }

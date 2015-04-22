@@ -3,6 +3,15 @@
 class TruffleApi extends LimonadeApi{
 
     private $require_from_simple_dir;
+    private $api_dir;
+    
+    public function get_api_dir(){
+        return $this->api_dir;
+    }
+    
+    public function set_api_dir($api_dir){
+        $this->api_dir = $api_dir;
+    }
 
     public function __construct($prefix, $api_name, $require_from_simple_dir = true){
         parent::__construct($prefix, $api_name);

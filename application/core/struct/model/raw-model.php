@@ -4,13 +4,12 @@ define('MODEL_PRIMARY_KEY_INDEX', 'id');
 define('MODEL_CRITERIA_INDEX', 'criteria');
 define('MODEL_DATA_INDEX', 'data');
 
-abstract class RawModel{
+abstract class RawModel extends ModelScheme{
 
-    private $table_name;
     private $operation;
 
     public function __construct($table_name){
-        $this->table_name = $table_name;
+        parent::__construct($table_name);
         $this->operation = null;
     }
 

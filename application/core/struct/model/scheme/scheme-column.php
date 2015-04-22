@@ -22,4 +22,19 @@ class SchemeColumn{
     public function get_constraints(){
         return $this->constraints;
     }
+    
+    public function get_sqlike_constraints(){
+        return array(
+            'type', 
+            'length',
+            'values',
+            'default',
+            'collation',
+            'attribute',
+            'null',
+            'index',
+            'auto-increment',
+            'comment'
+        );
+    }
 }

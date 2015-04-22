@@ -35,7 +35,7 @@ class TruffleApp{
     
     public static function default_filter_paths(){
         return array(
-            './application/lib/truffle/filter'
+            './application/core/truffle/filter'
         );
     }
     
