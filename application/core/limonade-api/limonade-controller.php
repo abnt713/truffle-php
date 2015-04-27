@@ -40,10 +40,13 @@ abstract class LimonadeController{
     
     private function _method($callable_method_name){
         $this->inspect_method_name($callable_method_name);
-        
-        $this->call_hook($callable_method_name, 'pre_hook');
-        $this->$callable_method_name();
+        $this->call_hook('global', 'pre_hook');
+        $pre_hook = $this->call_hook($callable_method_name, 'pre_hook');
+        if($pre_hook || is_null($pre_hook)){
+            $this->$callable_method_name();
+        }
         $this->call_hook($callable_method_name, 'pos_hook');
+        $this->call_hook('global', 'pos_hook');
     }
     
     private function call_hook($method_name, $hook_time){
@@ -52,6 +55,8 @@ abstract class LimonadeController{
         $hook_name = $method_name . '_' . $hook_time;
         if(method_exists($this, $hook_name)){
             $this->$hook_name();
+        }else{
+            return true;
         }
     }
     
@@ -61,7 +66,7 @@ abstract class LimonadeController{
         );
         
         if(!in_array($method_name, $available_methods)){
-            $this->limonade_api->throw_error('Invalid callable method name');
+            trigger_error('Method not found');
         }
     }
 }

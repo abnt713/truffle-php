@@ -15,4 +15,8 @@ final class PathParser{
         return str_replace('_', '-', $decamelized);
     }
     
+    public static function hiffen_to_underline($word){
+        return str_replace('-', '_', $word);
+    }
+    
 }

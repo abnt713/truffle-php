@@ -1,8 +1,7 @@
 <?php
 require_once 'application/core/inc.php';
+require_once 'application/config/bootstrap.php';
 require_once 'application/config/db.php';
+require_once 'application/config/api.php';
 
-TruffleApp::load_api('routes-v1', '/');
-TruffleApp::load_api('prancheta', '/tyna');
-TruffleApp::load_api('scheme-parser', '/scheme-parser');
 TruffleApp::serve();

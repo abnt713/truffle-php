@@ -22,10 +22,10 @@ class TruffleApp{
         }
     }
     
-    public static function load_api($api_name, $prefix){
+    public static function load_api($api_name, $prefix, $api_dir = ''){
         $self = self::get_instance();
         $api_loader = $self->api_loader;
-        $api_loader->load_api($api_name, $prefix);
+        $api_loader->load_api($api_name, $prefix, $api_dir);
     }
     
     public static function serve(){

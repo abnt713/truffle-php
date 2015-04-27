@@ -33,8 +33,10 @@ class FilterValidator implements RawValidator{
     public function validate_many($dataset, $filters){
         $result = true;
         foreach($dataset as $index => $data){
-            $filter = $filters[$index];
-            $result = $result && $this->validate_one($data, $filter);
+            $filter = isset($filters[$index]) ? $filters[$index] : null;
+            if(!is_null($filter)){
+                $result = $result && $this->validate_one($data, $filter);
+            }
         }
         return $result;
     }

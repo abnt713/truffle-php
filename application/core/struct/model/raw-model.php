@@ -1,15 +1,12 @@
 <?php
 
-define('MODEL_PRIMARY_KEY_INDEX', 'id');
-define('MODEL_CRITERIA_INDEX', 'criteria');
-define('MODEL_DATA_INDEX', 'data');
-
-abstract class RawModel extends ModelScheme{
+abstract class RawModel{
 
     private $operation;
+    private $table_name;
 
     public function __construct($table_name){
-        parent::__construct($table_name);
+        $this->table_name = $table_name;
         $this->operation = null;
     }
 
@@ -61,10 +58,18 @@ abstract class RawModel extends ModelScheme{
         return $ret_val;
     }
 
-    public function insert($data){
+    public function insert_one($data){
         $this->begin_operation();
         $this->set_operation_value('data', $data);
-        $ret_val = $this->_method('insert');
+        $ret_val = $this->_method('insert_one');
+        $this->end_operation();
+        return $ret_val;
+    }
+    
+    public function insert_many($data){
+        $this->begin_operation();
+        $this->set_operation_value('data', $data);
+        $ret_val = $this->_method('insert_many');
         $this->end_operation();
         return $ret_val;
     }
@@ -134,7 +139,7 @@ abstract class RawModel extends ModelScheme{
 
     private function inspect_method_name($method_name){
         $available_methods = array(
-            'get_one', 'get_many', 'insert', 'update_one', 'update_many', 'delete_one', 'delete_many'
+            'get_one', 'get_many', 'insert_one', 'insert_many', 'update_one', 'update_many', 'delete_one', 'delete_many'
         );
 
         return in_array($method_name, $available_methods);
@@ -159,13 +164,39 @@ abstract class RawModel extends ModelScheme{
         return $table->find_many();
     }
 
-    private function _insert(){
+    private function _insert_one(){
         $data = $this->get_operation_value('data');
         $row = ORM::for_table($this->table_name)->create();
         foreach($data as $column => $value){
             $row->$column = $value;
         }
         return $row->save();
+    }
+    
+    private function _insert_many(){
+        $data = $this->get_operation_value('data');
+        $sample = $data[0];
+        $columns = array_keys($sample);
+        $columns_sql = implode(', ', $columns);
+        
+        $index = 0;
+        $all_prepared_columns = array();
+        $dataset = array();
+        foreach($data as $single_data){
+            $subset = array();
+            foreach($columns as $column){
+                $prepared_column = $column . '_' . $index;
+                $dataset[$prepared_column] = $single_data[$column];
+                $subset[] = ':' . $prepared_column;
+            }
+            
+            $all_prepared_columns[] = '(' . implode(', ', $subset) . ')';
+            $index++;
+        }
+        
+        $all_prepared_columns_sql = implode(', ', $all_prepared_columns);
+        $insert_sql = "INSERT INTO {$this->table_name} ({$columns_sql}) VALUES {$all_prepared_columns_sql}";
+        return ORM::raw_execute($insert_sql, $dataset);
     }
 
     private function _update_one(){

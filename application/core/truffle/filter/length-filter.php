@@ -1,9 +1,9 @@
 <?php
 
-class LengthFilter implements ValidationFilter{
+class MaxlengthFilter implements ValidationFilter{
     
     public function filter($data, $parameters = array()){
-        
+        return strlen($data) < $parameters;
     }
     
 }
