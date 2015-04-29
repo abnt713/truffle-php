@@ -42,5 +42,7 @@ require_once 'application/core/truffle/validator/filter-validator.php';
 // Truffle functions
 require_once 'application/core/functions.php';
 
+define('_DEFAULT_API_DIR', './application/core/core-api');
+
 // Include default APIs
-require_once 'application/core/default-api/inc.php';
+require_once _DEFAULT_API_DIR . '/inc.php';

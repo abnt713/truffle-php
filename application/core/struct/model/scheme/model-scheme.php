@@ -4,7 +4,7 @@ class ModelScheme{
     
     private $columns;
     
-    public function __construct($table_name){
+    public function __construct(){
         $this->columns = array();
     }
     

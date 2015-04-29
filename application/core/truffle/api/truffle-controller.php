@@ -7,10 +7,7 @@ class TruffleController extends AssertController{
     }
 
     public function success($halt = true){
-        $this->set_status(1);
-        $this->add_message('Success');
-
-        echo $this->to_json();
+        $this->reach_outcome(new SuccessOutcome());
         if($halt){
             exit();
         }

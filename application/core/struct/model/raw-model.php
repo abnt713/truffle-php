@@ -4,10 +4,16 @@ abstract class RawModel{
 
     private $operation;
     private $table_name;
+    private $primary_key;
 
     public function __construct($table_name){
         $this->table_name = $table_name;
         $this->operation = null;
+        $this->primary_key = 'id';
+    }
+       
+    public function set_primary_key($pkey){
+        $this->primary_key = $pkey;
     }
 
     private function begin_operation(){
@@ -42,9 +48,9 @@ abstract class RawModel{
         ORM::get_db()->rollBack();
     }
 
-    public function get_one($id){
+    public function get_one($data){
         $this->begin_operation();
-        $this->set_operation_value('id', $id);
+        $this->set_operation_value('data', $data);
         $ret_val = $this->_method('get_one');
         $this->end_operation();
         return $ret_val;
@@ -147,18 +153,36 @@ abstract class RawModel{
 
     /* As operações abaixo assumem que os dados já foram validados */
     private function _get_one(){
-        $id = $this->get_operation_value('id');
+        $data = $this->get_operation_value('data');
         $table = ORM::for_table($this->table_name);
-        
-        return $table->find_one($id);
+        if(is_numeric($data) && intval($data) != 0){
+            return $this->find_one_by_id($data, $table);
+        }else{
+            $matched = $this->find_one_by_criteria($data, $table);
+            return isset($matched[0]) ? $matched[0] : false;
+        }
     }
 
+    private function find_one_by_id($id, $table){
+        return $table->find_one($id);
+    }
+    
+    private function find_one_by_criteria($criteria, $table){
+        if(count($criteria) > 0){
+            foreach($criteria as $function => $arg){
+                $table->$function($arg);
+            }
+        }
+        
+        return $table->find_many();
+    }
+    
     private function _get_many(){
         $criteria = $this->get_operation_value('criteria');
         $table = ORM::for_table($this->table_name);
         if(count($criteria) > 0){
-            foreach($criteria as $function => $args){
-                $table->$function($args[0], $args[1]);
+            foreach($criteria as $function => $arg){
+                $table->$function($arg);
             }
         }
         return $table->find_many();

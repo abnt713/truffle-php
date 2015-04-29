@@ -22,8 +22,7 @@ class SuccessOutcome extends ControllerOutcome{
         if(is_array($this->data)){
             $controller->set_contents($this->data);
         }
-        echo $controller->to_json();
-        
+        echo json($controller->to_array());
         exit(1);
     }
     
@@ -34,7 +33,7 @@ class HaltOutcome extends ControllerOutcome{
     public function outcome($controller){
         $controller->set_status(0);
         $controller->add_message($this->data);
-        echo $controller->to_json();
+        echo json($controller->to_array());
         
         exit(1);
     }
